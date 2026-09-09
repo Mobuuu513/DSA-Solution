@@ -1,0 +1,53 @@
+class Solution {
+    public int matArea(int[] arr){
+       int n = arr.length;
+       int[] pse = new int[n];
+       
+       Stack<Integer> st = new Stack<>();
+       st.push(0);
+       
+       pse[0] = -1;
+       
+       for(int i=1; i<n; i++){
+           while(st.size()>0 && arr[i]<=arr[st.peek()]) st.pop();
+           pse[i] = st.isEmpty() ? -1 : st.peek();
+           st.push(i);
+       }
+       st.clear();
+       
+       int[] nse = new int[n];
+       st.push(n-1);
+       nse[n-1] = n;
+       
+       for(int i=n-2; i>=0; i--){
+           while(st.size()>0 && arr[i]<=arr[st.peek()]) st.pop();
+           nse[i] = st.isEmpty() ? n : st.peek();
+           st.push(i);
+       }
+       
+       int maxArea = 0;
+       
+       for(int i=0; i<n; i++){
+           int width = nse[i] - pse[i] - 1;
+           maxArea = Math.max(maxArea, arr[i]*width);
+       }
+       return maxArea;
+    }
+    
+    public int maxArea(int mat[][]) {
+        
+        int n = mat.length , m = mat[0].length;
+        
+        for(int i=1; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(mat[i][j] != 0) mat[i][j] = mat[i-1][j]+mat[i][j];
+            }
+        }
+        int Area = 0;
+        for(int[] arr : mat){
+            int mArea = matArea(arr);
+            Area = Math.max(Area, mArea);
+        }
+        return Area;
+    }
+}
