@@ -1,0 +1,13 @@
+class Solution {
+    public void deleteMid(Stack<Integer> s) {
+        remove(s, s.size(), 0);
+    }
+    void remove(Stack<Integer> s, int n, int curr){
+        if(s.isEmpty()) return;
+        
+        int top = s.pop();
+        remove(s, n, curr+1);
+        
+        if(curr != n/2) s.push(top);
+    }
+}
