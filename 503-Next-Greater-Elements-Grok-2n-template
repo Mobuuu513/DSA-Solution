@@ -1,0 +1,23 @@
+class Solution {
+    public int[] nextGreaterElements(int[] arr) {
+        int n = arr.length;
+        int[] ans = new int[n];
+        Arrays.fill(ans, -1);
+
+        Stack<Integer> st = new Stack<>(); // indices still waiting
+
+        for (int i = 0; i < 2 * n; i++) {
+            int idx = i % n;
+
+            // hotter clip arrived — pay everyone waiting who is strictly colder
+            while (!st.isEmpty() && arr[idx] > arr[st.peek()]) {
+                ans[st.pop()] = arr[idx];
+            }
+
+            // only the first lap joins the wait line
+            // second lap exists only to pay leftover waiters via wrap
+            if (i < n) st.push(idx);
+        }
+        return ans;
+    }
+}
